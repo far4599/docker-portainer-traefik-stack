@@ -8,10 +8,10 @@ RESET='\033[0m'
 if ! type docker >/dev/null 2>&1; then
   printf "${RED}docker is not installed${RESET}\n\n"
   echo "Install docker first:\n"
-  if type curl >/dev/null 2>&1; then
-    echo "curl https://get.docker.com/ | sh"
-  elif type wget >/dev/null 2>&1; then
-    echo "wget -O - https://get.docker.com/ | sh\n"
+  if type wget >/dev/null 2>&1; then
+     echo "wget -O - https://get.docker.com/ | sh\n"
+  elif type curl >/dev/null 2>&1; then
+     echo "curl https://get.docker.com/ | sh\n"
   fi
   exit 1
 fi
