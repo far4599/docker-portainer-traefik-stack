@@ -34,64 +34,17 @@ read DOMAIN
 echo "Enter your email address: "
 read EMAIL
 
-docker_compose_yaml=$(cat <<EOF
-version: "3.7"
+mkdir -p "$TARGET_FOLDER"
+cd "$TARGET_FOLDER"
 
-services:
-  traefik:
-    image: traefik:2.10.3
-    restart: always
-    command:
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--providers.docker"
-      - "--providers.docker.exposedByDefault=false"
-      - "--providers.docker.network=traefik"
-      - "--log.level=ERROR"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.myresolver.acme.email=${EMAIL}"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
-    networks:
-      - traefik
-    labels:
-      traefik.http.routers.http-catchall.rule: hostregexp(\`{host:.+}\`)
-      traefik.http.routers.http-catchall.entrypoints: web
-      traefik.http.routers.http-catchall.middlewares: redirect-to-https
-      traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
-
-  portainer:
-    image: portainer/portainer-ce:2.18.4-alpine
-    command: -H unix:///var/run/docker.sock
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./data:/data
-    networks:
-      - traefik
-    labels:
-      traefik.enable: 'true'
-      traefik.http.services.portainer.loadbalancer.server.port: '9000'
-      traefik.http.routers.portainer.rule: Host(\`$DOMAIN\`)
-      traefik.http.routers.portainer.entrypoints: websecure
-      traefik.http.routers.portainer.service: portainer
-      traefik.http.routers.portainer.tls.certresolver: myresolver
-
-networks:
-  traefik:
-    external: true
-EOF
-)
+DOCKER_COMPOSE_YAML_URL="https://raw.githubusercontent.com/far4599/docker-portainer-traefik-stack/main/docker-compose.yaml"
+if type wget >/dev/null 2>&1; then
+   echo "wget -O '$TARGET_FOLDER/docker-compose.yaml' '$(DOCKER_COMPOSE_YAML_URL)' | sh\n"
+elif type curl >/dev/null 2>&1; then
+   echo "curl -o '$TARGET_FOLDER/docker-compose.yaml' '$(DOCKER_COMPOSE_YAML_URL)' | sh\n"
+fi
 
 mkdir -p "$TARGET_FOLDER$LE_FOLDER"
-echo "$docker_compose_yaml" > "$TARGET_FOLDER/docker-compose.yaml"
-cd "$TARGET_FOLDER"
 docker network create traefik >/dev/null 2>&1
 docker compose up -d
 
