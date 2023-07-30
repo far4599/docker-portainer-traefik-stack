@@ -28,8 +28,11 @@ LE_FOLDER=/letsencrypt
 echo "Provide your domain and email to setup DPTS."
 echo "You will be able to change this parameters later in:"
 echo "   /opt/dpts/docker-compose.yaml\n"
-read -p "Enter your domain: " DOMAIN
-read -p "Enter your email address: " EMAIL
+
+echo "Enter your domain: "
+read DOMAIN
+echo "Enter your email address: "
+read EMAIL
 
 docker_compose_yaml=$(cat <<EOF
 version: "3.7"
