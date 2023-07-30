@@ -25,7 +25,7 @@ fi
 TARGET_FOLDER=/opt/dpts
 LE_FOLDER=/letsencrypt
 
-echo "Provide your domain and email to setup DPTS."
+echo "Provide your domain and email to setup DPT."
 echo "You will be able to change this parameters later in:"
 echo "   /opt/dpts/docker-compose.yaml\n"
 
@@ -89,15 +89,15 @@ networks:
 EOF
 )
 
-mkdir -p $TARGET_FOLDER$LE_FOLDER
-echo "$docker_compose_yaml" > $TARGET_FOLDER/docker-compose.yaml
-cd $TARGET_FOLDER
+mkdir -p "$TARGET_FOLDER$LE_FOLDER"
+echo "$docker_compose_yaml" > "$TARGET_FOLDER/docker-compose.yaml"
+cd "$TARGET_FOLDER"
 docker network create traefik >/dev/null 2>&1
 docker compose up -d
 
 clear
 
-printf "${GREEN}DPTS is installed and running${RESET}\n\n"
+printf "${GREEN}DPT is installed and running${RESET}\n\n"
 
 # check if user is in docker group
 user=$(logname)
