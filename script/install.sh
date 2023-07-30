@@ -37,11 +37,11 @@ read EMAIL
 mkdir -p "$TARGET_FOLDER"
 cd "$TARGET_FOLDER"
 
-DOCKER_COMPOSE_YAML_URL="https://raw.githubusercontent.com/far4599/docker-portainer-traefik-stack/main/docker-compose.yaml"
+DOCKER_COMPOSE_YAML_URL=https://raw.githubusercontent.com/far4599/docker-portainer-traefik-stack/main/docker-compose.yaml
 if type wget >/dev/null 2>&1; then
-   echo "wget -O '$TARGET_FOLDER/docker-compose.yaml' '${DOCKER_COMPOSE_YAML_URL}' | sh\n"
+   echo "wget -O '$TARGET_FOLDER/docker-compose.yaml' '$DOCKER_COMPOSE_YAML_URL' | sh\n"
 elif type curl >/dev/null 2>&1; then
-   echo "curl -o '$TARGET_FOLDER/docker-compose.yaml' '${DOCKER_COMPOSE_YAML_URL}' | sh\n"
+   echo "curl -o '$TARGET_FOLDER/docker-compose.yaml' '$DOCKER_COMPOSE_YAML_URL' | sh\n"
 fi
 
 mkdir -p "$TARGET_FOLDER$LE_FOLDER"
