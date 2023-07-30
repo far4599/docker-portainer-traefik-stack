@@ -9,7 +9,7 @@ if ! type docker >/dev/null 2>&1; then
   printf "${RED}docker is not installed${RESET}\n\n"
   echo "Install docker first:\n"
   if type wget >/dev/null 2>&1; then
-     wget -c -O - https://get.docker.com/ | sh
+     wget -qc --show-error -O - https://get.docker.com/ | sh
   elif type curl >/dev/null 2>&1; then
      curl https://get.docker.com/ | sh
   fi
@@ -39,7 +39,7 @@ cd "$TARGET_FOLDER"
 
 DOCKER_COMPOSE_YAML_URL="https://raw.githubusercontent.com/far4599/docker-portainer-traefik-stack/main/docker-compose.yaml"
 if type wget >/dev/null 2>&1; then
-   wget -c -O "$TARGET_FOLDER/docker-compose.yaml" "$DOCKER_COMPOSE_YAML_URL"
+   wget -qc --show-error -O "$TARGET_FOLDER/docker-compose.yaml" "$DOCKER_COMPOSE_YAML_URL"
 elif type curl >/dev/null 2>&1; then
    curl -o "$TARGET_FOLDER/docker-compose.yaml" "$DOCKER_COMPOSE_YAML_URL"
 fi
